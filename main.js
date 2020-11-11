@@ -4,6 +4,7 @@ const client = new Discord.Client();
 const yargs = require("yargs");
 const fs = require("fs");
 const { join } = require("path");
+const { command } = require("yargs");
 
 const prefix = "!";
 
@@ -28,7 +29,11 @@ const mountCmdFolder = (path) => {
         const cmdPath = fsPathToCmdPath(path);
 
         let newCMD = require(fRelPath);
-        newCMD.command = filenameOf(f) + " " + newCMD.command;
+        if (newCMD.first_arg){
+          newCMD.command = filenameOf(f) + " " + newCMD.first_arg;
+        } else {
+          newCMD.command = filenameOf(f);
+        }
         if (cmdPath.trim() !== "")
           newCMD.command = cmdPath + " " + newCMD.command;
         yargs.command(newCMD);
@@ -49,7 +54,7 @@ client.on("ready", () => {
       ) {
       return;
     }
-    console.log(msg.content, !msg.content.startsWith(prefix))
+    // console.log(msg.content, !msg.content.startsWith(prefix))
     if(!msg.content.startsWith(prefix)) return;
 
     msg.content = msg.content.split('!')[1];

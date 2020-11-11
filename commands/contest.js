@@ -1,6 +1,6 @@
 const rd = require('../helpers/random')
 
-exports.command = "<sentence>";
+exports.first_arg = "<sentence>";
 
 exports.describe =
   "Implique Chouette dans le débat. ";

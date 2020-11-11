@@ -1,4 +1,4 @@
-exports.command = "<first_word> [the_rest..]";
+exports.first_arg = "<first_word> [the_rest..]";
 
 exports.describe =
   "make me reapeat something. Sometimes you just need a friend.";
