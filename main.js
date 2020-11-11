@@ -5,6 +5,8 @@ const yargs = require("yargs");
 const fs = require("fs");
 const { join } = require("path");
 
+const prefix = "!";
+
 yargs.scriptName("");
 
 //<Kernighan's_Law>
@@ -39,6 +41,7 @@ mountCmdFolder("./commands");
 //</Kernighan's_Law>
 
 client.on("ready", () => {
+  console.log("Chouette is running !")
   client.on("message", (msg) => {
     if (
       msg.author == client.user ||
@@ -46,6 +49,10 @@ client.on("ready", () => {
       ) {
       return;
     }
+    console.log(msg.content, !msg.content.startsWith(prefix))
+    if(!msg.content.startsWith(prefix)) return;
+
+    msg.content = msg.content.split('!')[1];
 
     yargs.parse(msg.content, { msg: msg }, (err, argv, output) => {
       if (output) msg.channel.send("```" + output + "```");
