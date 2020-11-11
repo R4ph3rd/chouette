@@ -2,9 +2,8 @@ module.exports = {
     score : [],
     relance : -1,
     msgEmbed : {
-        color: 0x0099ff,
+        color: 0xd22140,
         title: 'Some title',
-        url: 'https://discord.js.org',
         author: {
           name: 'Some name',
           icon_url: 'https://i.imgur.com/wSTFkRM.png',

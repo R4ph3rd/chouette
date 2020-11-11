@@ -5,6 +5,7 @@ const yargs = require("yargs");
 const fs = require("fs");
 const { join } = require("path");
 const { command } = require("yargs");
+const store = require("./store");
 
 const prefix = "!";
 
@@ -58,6 +59,7 @@ client.on("ready", () => {
     if(!msg.content.startsWith(prefix)) return;
 
     msg.content = msg.content.split('!')[1];
+    if (store.msgEmbed.fields) store.msgEmbed.fields = [];
 
     yargs.parse(msg.content, { msg: msg }, (err, argv, output) => {
       if (output) msg.channel.send("```" + output + "```");
