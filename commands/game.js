@@ -8,24 +8,23 @@ exports.describe =
   "Lance une nouvelle partie";
 
 exports.handler = (argv) => {
-    store.score = [];
+    store.score = {};
 
     argv.msg.mentions.users.forEach( user => {
-      store.score.push({
-        user: user.id,
+      store.score[user.id] = {
         name: user.username,
         avatar: user.displayAvatarURL,
         points: 0
-      })
+      }
     }) 
     
-    if(!store.score.some(user => user.user == argv.msg.author.id)){
-      store.score.push({
+    if(!store.score[argv.msg.author.id]){
+      store.score[user.id] = {
         user: argv.msg.author.id,
         name: argv.msg.author.username,
         avatar: argv.msg.author.displayAvatarURL,
         points: 0
-      })
+      }
     }
 
     let msg = embed.setEmbed({
@@ -36,10 +35,10 @@ exports.handler = (argv) => {
       avatar: 'https://vignette.wikia.nocookie.net/kaamelott-officiel/images/2/28/Le_Tavernier.jpg/revision/latest/top-crop/width/360/height/450?cb=20151112112541&path-prefix=fr',
     })
     
-    msg.fields = store.score.map(user => {
+    msg.fields = Object.keys(store.score).map(userID => {
       return {
-        name: user.name,
-        value: user.points + ' pts',
+        name: store.score[userID].name,
+        value: store.score[userID].points + ' pts',
         inline: true
       }
     })

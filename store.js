@@ -1,5 +1,6 @@
 module.exports = {
     score : [],
+    temp: [],
     relance : -1,
     msgEmbed : {
         color: 0xd22140,

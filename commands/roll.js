@@ -1,7 +1,9 @@
 const { example } = require('yargs');
 const rd = require('../helpers/random')
 const check = require('../helpers/check')
-const store = require('../store')
+const score = require('../helpers/score')
+const store = require('../store');
+const embed = require('../helpers/embed');
 
 exports.first_arg = "<dice>";
 
@@ -29,44 +31,65 @@ exports.describe =
 
 
 exports.handler = (argv) => {
-  console.log(argv);
   if(rd.bevue()){
     argv.msg.channel.send(rd.pickRandomSentence('bevues'));
   } else {
-    let results = [6, 6, 5];
+    let results = [3,4,3];
     /* for (let i = 0 ; i < argv.dice ; i++){
       results.push(Math.floor(rd.random(7)));
     } */
     
-    let double = results.find( x => results.filter(z => z != x).length == 1)
-    let triple = results.find( x => results.filter(z => z != x).length == 0)
+    let double = results.find( x => results.filter(z => z != x).length == 1);
+    let triple = results.find( x => results.filter(z => z != x).length == 0);
+
+    let s = argv.dice > 1 ? 's' : ''; 
+    let msg = embed.setEmbed({
+      title: `Résultat du lancé de dé${s}`,
+      desc: results.join(' - '),
+      picture: rd.pickRandomSentence(require('../data/thumb/gamecovers.json')),
+      author: argv.msg.author.username,
+      avatar: argv.msg.author.displayAvatarURL,
+    });
 
     if (double != undefined){
       store.relance = double ;
-      store.msgEmbed.fields = [
+      msg.fields = [
         {
           name: "Pour tenter le cul de chouette de " + double,
-          value: "!relance"
+          value: process.env.PREFIX + "relance"
         }
       ]
     } else if (triple != undefined) {
       let party = ":game_die: :game_die: :game_die:"
-      store.msgEmbed.fields = [
+      msg.fields = [
         {
           name: party + " CUL DE CHOUETTE DE " + check.namedResults(triple).toUpperCase() + ' ' +  party,
           value: "Visaprevis ex spiritus maxima !"
         }
       ]
-    } else {
-      store.msgEmbed.fields = []
-    }
+    }    
 
-    let s = argv.dice > 1 ? 's' : ''; 
+    msg.thumbnail =  {
+      url: 'https://images.unsplash.com/photo-1522069213448-443a614da9b6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2552&q=80',
+    };
     
-    store.msgEmbed.author.name = argv.msg.author.username;
-    store.msgEmbed.author.icon_url = argv.msg.author.displayAvatarURL;
-    store.msgEmbed.title = `Résultat du lancé de dé${s}`;
-    store.msgEmbed.description = results.join(' - ');
-    argv.msg.channel.send({embed : store.msgEmbed});
+    argv.msg.channel.send({embed : msg});
+
+    score.determineFigure(results)
+    
+    if(triple != undefined){
+      store.score[argv.msg.author.id].points += score.calculatePoints(results);
+      
+      let updateScore = embed.setEmbed({
+        title: `Nouveau score`,
+        desc: store.score[argv.msg.author.id].points,
+        picture: 'https://static.hitek.fr/img/products/m6/m6-kaamelott/m6-kaamelott-2.jpg',
+        author: argv.msg.author.username,
+        avatar: argv.msg.author.displayAvatarURL,
+      });
+      updateScore.timestamp = ''
+
+      argv.msg.channel.send({embed : updateScore});
+    }
   }
 };
