@@ -1,7 +1,9 @@
 module.exports = {
     score : [],
-    temp: [],
-    relance : -1,
+    temp: {
+      relance : -1,
+      waitingFor: []
+    },
     msgEmbed : {
         color: 0xd22140,
         title: 'Some title',

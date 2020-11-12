@@ -14,13 +14,5 @@ exports.describe =
 // }
 
 exports.handler = (argv) => {
-  
-    /* store.msgEmbed.author.name = argv.msg.author.username;
-    store.msgEmbed.author.icon_url = argv.msg.author.displayAvatarURL;
-    store.msgEmbed.title = `Résultat du lancé de dé`;
-    store.msgEmbed.description = result;
-    let msg = embed.setEmbed({
-        
-    })
-    argv.msg.channel.send({embed : store.msgEmbed}); */
+  store.score[argv.msg.author.id].points += score.calculatePoints(results);
 };

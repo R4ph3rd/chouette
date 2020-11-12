@@ -1,4 +1,4 @@
-const {score} = require('../store')
+const store = require('../store')
 
 module.exports = {
     determineFigure : (arrScore) => {
@@ -10,20 +10,75 @@ module.exports = {
         let artichette = arrScore.filter(x => x == 4).length == 2 && arrScore.filter(x => x == 3).length == 1;
         let bleurouge = arrScore.filter(x => x == 4).length == 1 && arrScore.filter(x => x == 3).length == 2;
 
-        console.log('chouette', chouette)
+        /* console.log('chouette', chouette)
         console.log('cdc', culdechouette)
         console.log('velute', velute)
         console.log('cvelute', chouettevelute)
         console.log('tatan', tatan)
         console.log('artichette', artichette)
-        console.log('bleurouge', bleurouge)
+        console.log('bleurouge', bleurouge) */
+
+        if (chouettevelute){
+            return {
+                name: 'chouette velute',
+                score: chouettevelute
+            }
+        } else if (bleurouge){
+            return {
+                name: 'bleu rouge'
+            }
+        } else if (artichette){
+            return {
+                name: 'artichette'
+            }
+        } else if (chouette){
+            return {
+                name: 'chouette',
+                score: chouette
+            }
+        } else if (culdechouette){
+            return {
+                name: 'cul de chouette',
+                score: culdechouette
+            }
+        } else if (velute){
+            return {
+                name: 'velute',
+                score: velute
+            }
+        } else if (tatan){
+            return {
+                name: 'tatan'
+            }
+        }
 
     },
-    calculatePoints: (arrScore) => {
-        module.exports.determineFigure(arrScore);
-        return (arrScore[0] * 10) + 40;
+    calculatePoints: (figure) => {        
+        switch (figure.name){
+            case 'chouette velute':
+                return (figure.score * figure.score) * 2;
+            case 'chouette':
+                return (figure.score * figure.score);
+            case 'cul de chouette':
+                return (figure.score * figure.score * figure.score);
+            case 'velute':
+                return (figure.score * figure.score) * 2;
+            case 'tatan':
+                break;
+            case 'artichette':
+                return 16;
+            case 'bleu rouge':
+                return 9;
+        }
     },
     showConcurrents : () => {
         return score;
     },
+    clearTemp : (key) => {
+        if(key){
+            store.temp[key] = null ;
+        } else {
+            store.temp = {}
+        }
+    }
 }
