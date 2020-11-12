@@ -7,8 +7,6 @@ const { join } = require("path");
 const { command } = require("yargs");
 const store = require("./store");
 
-const prefix = "!";
-
 yargs.scriptName("");
 
 //<Kernighan's_Law>
@@ -56,9 +54,9 @@ client.on("ready", () => {
       return;
     }
     // console.log(msg.content, !msg.content.startsWith(prefix))
-    if(!msg.content.startsWith(prefix)) return;
+    if(!msg.content.startsWith(process.env.PREFIX)) return;
 
-    msg.content = msg.content.split('!')[1];
+    msg.content = msg.content.split(process.env.PREFIX)[1];
     if (store.msgEmbed.fields) store.msgEmbed.fields = [];
 
     yargs.parse(msg.content, { msg: msg }, (err, argv, output) => {
