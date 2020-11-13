@@ -1,5 +1,5 @@
 const store = require('../store');
-const embed = require('../helpers/embed');
+const score = require('../helpers/score');
 
 exports.describe =
   "Accepte le jet de  dés.";
@@ -14,5 +14,8 @@ exports.describe =
 // }
 
 exports.handler = (argv) => {
-  store.score[argv.msg.author.id].points += score.calculatePoints(results);
+  let figure = score.determineFigure([store.temp.relance, store.temp.relance, 0]);
+  let currentScore = score.calculatePoints(figure);
+  
+  score.updateScore(argv.msg.author, currentScore, argv.msg.channel);
 };

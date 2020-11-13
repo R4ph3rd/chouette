@@ -1,6 +1,8 @@
 module.exports = {
-    score : [],
+    score : {},
+    order: [],
     temp: {
+      nextPlayerIndex: 0,
       relance : -1,
       waitingFor: []
     },
