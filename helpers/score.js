@@ -6,24 +6,29 @@ module.exports = {
         let chouette = arrScore.find( x => arrScore.filter(z => z == x).length == 2);
         let culdechouette = arrScore.find( x => arrScore.filter(z => z != x).length == 0);
         let velute = arrScore.find( x => arrScore.filter(y => y != x).reduce((acc, cur) => cur += acc, 0) == x);
-        let chouettevelute = chouette && velute ? velute : undefined;
         let tatan = arrScore.sort((a,b) => a - b).join('') == '256';
         let artichette = arrScore.filter(x => x == 4).length == 2 && arrScore.filter(x => x == 3).length == 1;
         let bleurouge = arrScore.filter(x => x == 4).length == 1 && arrScore.filter(x => x == 3).length == 2;
+        let suite = arrScore.sort((a,b) => a - b)[0] + 2 == arrScore.sort((a,b) => a - b)[2]
 
         console.log('array :', arrScore)
         console.log('chouette', chouette)
         console.log('cdc', culdechouette)
         console.log('velute', velute)
-        console.log('cvelute', chouettevelute)
+        console.log('cvelute', velute && chouette ? valute : undefined)
         console.log('tatan', tatan)
         console.log('artichette', artichette)
         console.log('bleurouge', bleurouge)
 
-        if (chouettevelute){
+        if (chouette && velute){
             return {
                 name: 'chouette velute',
-                score: chouettevelute
+                score: velute
+            }
+        } else if (suite && velute){
+            return {
+                name: 'suite velute',
+                score: velute
             }
         } else if (bleurouge){
             return {
@@ -52,6 +57,10 @@ module.exports = {
             return {
                 name: 'tatan'
             }
+        } else if (suite){
+            return {
+                name: 'suite'
+            }
         } else {
             return null;
         }
@@ -62,6 +71,8 @@ module.exports = {
             switch (figure.name){
                 case 'chouette velute':
                     if (pari) return (- figure.score * figure.score); 
+                    return (figure.score * figure.score) * 2;
+                case 'suite velute':
                     return (figure.score * figure.score) * 2;
                 case 'chouette':
                     if (pari && pari != figure.score) var coef = -1 ;
@@ -77,11 +88,11 @@ module.exports = {
                     return 16;
                 case 'bleu rouge':
                     return 9;
+                case 'suite':
+                    return -10;
             }
         } else {
-            if (store.temp.relance){
-                return - (store.temp.relance * store.temp.relance);
-            }
+            return 0;
         }
     },
     updateScore: (author, score, channel) => {
@@ -99,7 +110,7 @@ module.exports = {
         channel.send({embed : updateScore});
     },
     showConcurrents : () => {
-        return score;
+        return store.score;
     },
     clearTemp : (key) => {
         if(key){

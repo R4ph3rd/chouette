@@ -67,9 +67,9 @@ exports.handler = (argv) => {
     if(rd.bevue()){
       argv.msg.channel.send(rd.pickRandomSentence('bevues'));
     } else {
-      let results = [5,5,6];
+      let results = [];
       
-      /* if (!argv.dice){
+      if (!argv.dice){
         for (let i = 0 ; i < 3 ; i++){
           results.push(Math.floor(rd.random(7)));
         }
@@ -77,7 +77,7 @@ exports.handler = (argv) => {
         for (let i = 0 ; i < argv.dice ; i++){
           results.push(Math.floor(rd.random(7)));
         }
-      } */
+      }
   
       let figure = score.determineFigure(results);
       let s = argv.dice > 1 ? 's' : ''; 
