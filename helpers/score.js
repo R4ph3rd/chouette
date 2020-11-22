@@ -109,9 +109,6 @@ module.exports = {
 
         channel.send({embed : updateScore});
     },
-    showConcurrents : () => {
-        return store.score;
-    },
     clearTemp : (key) => {
         if(key){
             store.temp[key] = null ;

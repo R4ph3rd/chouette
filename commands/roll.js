@@ -67,9 +67,9 @@ exports.handler = (argv) => {
     if(rd.bevue()){
       argv.msg.channel.send(rd.pickRandomSentence('bevues'));
     } else {
-      let results = [];
-      
-      if (!argv.dice){
+      let results = [3,3,4];
+
+      /* if (!argv.dice){
         for (let i = 0 ; i < 3 ; i++){
           results.push(Math.floor(rd.random(7)));
         }
@@ -77,7 +77,9 @@ exports.handler = (argv) => {
         for (let i = 0 ; i < argv.dice ; i++){
           results.push(Math.floor(rd.random(7)));
         }
-      }
+      } */
+      
+      
   
       let figure = score.determineFigure(results);
       let s = argv.dice > 1 ? 's' : ''; 
@@ -91,8 +93,18 @@ exports.handler = (argv) => {
 
       if (figure){ 
         let emojis = '';
+        console.log('figure:', figure)
   
         switch (figure.name){
+          case 'bleu rouge':
+            emojis = ':lobster:  :lobster:  :lobster:';
+            msg.fields = [{
+              name: emojis + "   BLEU ROUGE   " + emojis,
+              value: `**${process.env.PREFIX}relance X** pour relancer le bleu rouge`
+            }];
+
+            console.log(msg)
+            break;
           case 'chouette velute':
             emojis = ":gem: :gem: :gem:"
             msg.fields = [
